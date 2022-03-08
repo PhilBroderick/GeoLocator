@@ -1,4 +1,4 @@
-﻿namespace GeoLocator.Core.Entities;
+﻿namespace GeoLocator.Core.Entities.LocationAggregate;
 public class IpAddress
 {
     public string Ip { get; set; } = "";
