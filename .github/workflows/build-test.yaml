@@ -22,5 +22,7 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
+      - name: Unit Tests
+        run: dotnet test tests/GeoLocator.UnitTests --no-build --verbosity normal
+      - name: Integration Tests
+        run: dotnet test tests/GeoLocator.IntegrationTests --no-build --verbosity normal
