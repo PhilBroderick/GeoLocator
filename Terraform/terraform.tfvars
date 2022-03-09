@@ -1,0 +1,5 @@
+rg_name               = "geo-locator-rg"
+location 		      = "uksouth"
+app_service_plan_name = "geo-locator-service-plan"
+app_service_name      = "geo-locator"
+kv_name               = "geolocator-kv"
