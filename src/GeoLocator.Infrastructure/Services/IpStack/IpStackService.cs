@@ -3,6 +3,7 @@ using GeoLocator.Core.Interfaces;
 using GeoLocator.Shared.HttpClients;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace GeoLocator.Infrastructure.Services.IpStack;
 
@@ -38,7 +39,16 @@ public class IpStackService : IIpLocationLookupService
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                var ipStackResponse = JsonConvert.DeserializeObject<IpStackResponse>(json);
+
+                var jsonSettings = new JsonSerializerSettings
+                {
+                    ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new SnakeCaseNamingStrategy()
+                    }
+                };
+
+                var ipStackResponse = JsonConvert.DeserializeObject<IpStackResponse>(json, jsonSettings);
 
                 return new Location
                 {

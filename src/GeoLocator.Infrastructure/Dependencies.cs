@@ -8,13 +8,7 @@ public static class Dependencies
 {
     public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
     {
-        var useOnlyInMemoryDatabase = false;
-        if (configuration["UseOnlyInMemoryDatabase"] != null)
-        {
-            useOnlyInMemoryDatabase = bool.Parse(configuration["UseOnlyInMemoryDatabase"]);
-        }
-
-        if (useOnlyInMemoryDatabase)
+        if (UseInMemoryDatabase(configuration))
         {
             services.AddDbContext<GeoLocatorDbContext>(c =>
                c.UseInMemoryDatabase("GeoLocator"));
@@ -27,4 +21,17 @@ public static class Dependencies
                 c.UseSqlServer(configuration.GetConnectionString("GeoLocatorConnection")));
         }
     }
+
+    public static async Task EnsureDatabaseCreated(IServiceProvider serviceProvider, IConfiguration configuration)
+    {
+        if (!UseInMemoryDatabase(configuration))
+        {
+            var scope = serviceProvider.GetService<IServiceScopeFactory>().CreateScope();
+
+            await using var geoLocatorDbContext = scope.ServiceProvider.GetRequiredService<GeoLocatorDbContext>();
+            await geoLocatorDbContext.Database.MigrateAsync();
+        }
+    }
+
+    private static bool UseInMemoryDatabase(IConfiguration configuration) => bool.TryParse(configuration["UseOnlyInMemoryDatabase"], out var useOnlyInMemoryDatabase) && useOnlyInMemoryDatabase;
 }

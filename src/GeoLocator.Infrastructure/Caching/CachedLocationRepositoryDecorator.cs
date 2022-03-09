@@ -10,11 +10,15 @@ public class CachedLocationRepositoryDecorator : ILocationRepository
 {
     private readonly ILocationRepository _locationRepository;
     private readonly ICacheService _cacheService;
+    private readonly IAppLogger<CachedLocationRepositoryDecorator> _logger;
 
-    public CachedLocationRepositoryDecorator(ILocationRepository repository, ICacheService cacheService)
+    public CachedLocationRepositoryDecorator(ILocationRepository repository, 
+        ICacheService cacheService, 
+        IAppLogger<CachedLocationRepositoryDecorator> logger)
     {
         _locationRepository = repository;
         _cacheService = cacheService;
+        _logger = logger;
     }
 
     public async Task<Location> AddAsync(Location location)
@@ -36,11 +40,12 @@ public class CachedLocationRepositoryDecorator : ILocationRepository
         }
     }
 
-    public async Task<Location> GetByIpAddress(string ipAddress)
+    public async Task<Location?> GetByIpAddress(string ipAddress)
     {
         var isCached = _cacheService.TryGet<Location>(ipAddress, out var locationFromCache);
         if (isCached)
         {
+            _logger.LogInformation("{IpAddress} found in cache");
             return locationFromCache;
         }
 
@@ -48,9 +53,10 @@ public class CachedLocationRepositoryDecorator : ILocationRepository
 
         if (locationFromRepository is not null)
         {
+            _logger.LogInformation("{IpAddress} found in persistence layer");
             _cacheService.Set(ipAddress, locationFromRepository);
         }
 
-        return locationFromRepository;
+        return null;
     }
 }
