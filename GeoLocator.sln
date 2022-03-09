@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoLocator.IntegrationTests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoLocator.Web", "src\GeoLocator.Web\GeoLocator.Web.csproj", "{F52EA011-A568-418F-BACF-EA9B9F9096C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoLocator.Shared", "src\GeoLocator.Shared\GeoLocator.Shared.csproj", "{7E6B5C45-3254-4116-A7FC-3F59DB8247CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoLocator.Shared", "src\GeoLocator.Shared\GeoLocator.Shared.csproj", "{7E6B5C45-3254-4116-A7FC-3F59DB8247CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoLocator.FunctionalTests", "tests\GeoLocator.FunctionalTests\GeoLocator.FunctionalTests.csproj", "{FAF03B2B-0B13-48FF-81E4-67C815F7AD44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoLocator.FunctionalTests", "tests\GeoLocator.FunctionalTests\GeoLocator.FunctionalTests.csproj", "{FAF03B2B-0B13-48FF-81E4-67C815F7AD44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

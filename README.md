@@ -24,7 +24,7 @@ More services can be easily added and substituted in.
 This microservice provides 2 public API methods:
 
 1. `/api/location` - retrieves the location information for the caller
-2. `/api/location/{ipAddress}` - retrieves the location information for the provided ipAddress
+2. `/api/location?ipAddress={ipAddress}` - retrieves the location information for the provided ipAddress
 
 ## Caching/Persistence
 
@@ -54,6 +54,14 @@ Running the following in a CLI:
 ```bash
 dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\GeoLocator.Web.pfx -p password
 dotnet dev-certs https --trust
+```
+
+### Adding API key
+An API key is required when using IpStack. An account should first be created [here](https://ipstack.com/product) (free is sufficient), and the access key added to the `appsettings.json` file, or alternatively by adding a ENV variable in `docker-compose.yaml` under the geolocator service:
+
+```yaml
+environment:
+    - IpStack__AccessKey: <MY ACCESS KEY>
 ```
 
 ### Running in docker
