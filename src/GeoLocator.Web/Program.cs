@@ -7,6 +7,7 @@ using GeoLocator.Infrastructure.Logging;
 using GeoLocator.Infrastructure.Services.IpStack;
 using GeoLocator.Shared.HttpClients;
 using GeoLocator.Web.Extensions;
+using GeoLocator.Web.Middleware;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,7 +49,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    await Dependencies.EnsureDatabaseCreated(app.Services, app.Configuration);
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

@@ -3,5 +3,5 @@
 namespace GeoLocator.Core.Interfaces;
 public interface ILocationRepository : IRepository<Location>
 {
-    Task<Location> GetByIpAddress(string ipAddress);
+    Task<Location?> GetByIpAddress(string ipAddress);
 }
