@@ -55,6 +55,7 @@ public class CachedLocationRepositoryDecorator : ILocationRepository
         {
             _logger.LogInformation("{IpAddress} found in persistence layer");
             _cacheService.Set(ipAddress, locationFromRepository);
+            return locationFromRepository;
         }
 
         return null;

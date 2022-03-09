@@ -50,6 +50,11 @@ public class IpStackService : IIpLocationLookupService
 
                 var ipStackResponse = JsonConvert.DeserializeObject<IpStackResponse>(json, jsonSettings);
 
+                if (IsInvalidResponse(ipStackResponse))
+                {
+                    throw new Exception("Invalid response {ipStackResponse} received from ipstack.com"); ;
+                }
+
                 return new Location
                 {
                     Country = ipStackResponse.CountryName,
@@ -66,4 +71,8 @@ public class IpStackService : IIpLocationLookupService
         }
         return null;
     }
+
+    private static bool IsInvalidResponse(IpStackResponse ipStackResponse) => 
+        string.IsNullOrWhiteSpace(ipStackResponse.Ip) ||
+        string.IsNullOrWhiteSpace(ipStackResponse.City);
 }
