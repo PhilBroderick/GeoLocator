@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoLocator.UnitTests", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoLocator.IntegrationTests", "tests\GeoLocator.IntegrationTests\GeoLocator.IntegrationTests.csproj", "{AD8AFF9C-7551-43CD-A867-58CD778D0A44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoLocator.Web", "src\GeoLocator.Web\GeoLocator.Web.csproj", "{F52EA011-A568-418F-BACF-EA9B9F9096C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoLocator.Web", "src\GeoLocator.Web\GeoLocator.Web.csproj", "{F52EA011-A568-418F-BACF-EA9B9F9096C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoLocator.Shared", "src\GeoLocator.Shared\GeoLocator.Shared.csproj", "{7E6B5C45-3254-4116-A7FC-3F59DB8247CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoLocator.FunctionalTests", "tests\GeoLocator.FunctionalTests\GeoLocator.FunctionalTests.csproj", "{FAF03B2B-0B13-48FF-81E4-67C815F7AD44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +47,14 @@ Global
 		{F52EA011-A568-418F-BACF-EA9B9F9096C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F52EA011-A568-418F-BACF-EA9B9F9096C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F52EA011-A568-418F-BACF-EA9B9F9096C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E6B5C45-3254-4116-A7FC-3F59DB8247CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E6B5C45-3254-4116-A7FC-3F59DB8247CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E6B5C45-3254-4116-A7FC-3F59DB8247CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E6B5C45-3254-4116-A7FC-3F59DB8247CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAF03B2B-0B13-48FF-81E4-67C815F7AD44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF03B2B-0B13-48FF-81E4-67C815F7AD44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAF03B2B-0B13-48FF-81E4-67C815F7AD44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF03B2B-0B13-48FF-81E4-67C815F7AD44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +65,8 @@ Global
 		{303FADCC-9E61-49E2-8462-589302FD1562} = {47A04594-D7CD-4510-9CE8-188CFC6C5831}
 		{AD8AFF9C-7551-43CD-A867-58CD778D0A44} = {47A04594-D7CD-4510-9CE8-188CFC6C5831}
 		{F52EA011-A568-418F-BACF-EA9B9F9096C4} = {F9563764-473F-4C7E-AA10-9A7D115F365A}
+		{7E6B5C45-3254-4116-A7FC-3F59DB8247CF} = {F9563764-473F-4C7E-AA10-9A7D115F365A}
+		{FAF03B2B-0B13-48FF-81E4-67C815F7AD44} = {47A04594-D7CD-4510-9CE8-188CFC6C5831}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39E766CB-63EE-45CF-9D27-9F2C1BADC5C3}
