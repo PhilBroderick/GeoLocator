@@ -3,7 +3,7 @@ using GeoLocator.Shared.Interfaces;
 
 namespace GeoLocator.Core.Entities.LocationAggregate;
 
-public class Location : BaseEntity<int>, IAggregateRoot
+public class Location : IAggregateRoot
 {
     private List<IpAddress> _ipAddresses = new();
 
@@ -14,4 +14,16 @@ public class Location : BaseEntity<int>, IAggregateRoot
     public string City { get; set; } = "";
     public double Longitude { get; set; }
     public double Latitude { get; set; }
+
+    public int Id {get; protected set;}
+
+    public void AddIpAddress(IpAddress ipAddress)
+    {
+        if (string.IsNullOrWhiteSpace(ipAddress.Ip))
+        {
+            throw new ArgumentNullException(nameof(ipAddress));
+        }
+
+        _ipAddresses.Add(ipAddress);
+    }
 }

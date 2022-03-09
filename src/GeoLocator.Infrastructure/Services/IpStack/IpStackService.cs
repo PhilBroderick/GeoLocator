@@ -1,4 +1,4 @@
-﻿using GeoLocator.Core.Entities;
+﻿using GeoLocator.Core.Entities.LocationAggregate;
 using GeoLocator.Core.Interfaces;
 using GeoLocator.Shared.HttpClients;
 using Microsoft.Extensions.Options;
@@ -15,17 +15,17 @@ public class IpStackService : IIpLocationLookupService
     private readonly string _accessKey;
     private readonly IAppLogger<IpStackService> _logger;
 
-    public IpStackService(IHttpClientFactory httpClientFactory, IOptions<IpStackOptions> options)
-        //IAppLogger<IpStackService> logger)
+    public IpStackService(IHttpClientFactory httpClientFactory, IOptions<IpStackOptions> options,
+        IAppLogger<IpStackService> logger)
     {
         _httpClientFactory = httpClientFactory;
         _accessKey = options.Value.AccessKey;
-        //_logger = logger;
+        _logger = logger;
     }
 
     public async Task<Location> GetLocationFromIp(string ip)
     {
-        //_logger.LogInformation("Retrieving location information for {IpAddress}", ip);
+        _logger.LogInformation("Retrieving location information for {IpAddress}", ip);
 
         var client = _httpClientFactory.CreateClient(NamedHttpClients.IpStackHttpClient);
 

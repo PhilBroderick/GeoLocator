@@ -1,7 +1,7 @@
-﻿namespace GeoLocator.Core.Entities.LocationAggregate;
-public class IpAddress
+﻿using GeoLocator.Shared;
+
+namespace GeoLocator.Core.Entities.LocationAggregate;
+public class IpAddress : BaseEntity<int>
 {
     public string Ip { get; set; } = "";
-
-    public string Type { get; set; } = "";
 }

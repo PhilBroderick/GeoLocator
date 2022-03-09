@@ -8,5 +8,6 @@ namespace GeoLocator.Shared.Interfaces
 {
     public interface IAggregateRoot
     {
+        int Id { get; }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using GeoLocator.Core.Interfaces;
 using GeoLocator.Web.ApiModels;
 using GeoLocator.Web.Extensions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace GeoLocator.Web.Controllers;
 
@@ -21,10 +19,10 @@ public class LocationController : ControllerBase
     }
 
     /// <summary>
-    /// GET: api/location/{ip}
+    /// GET: api/location/{ipAddress}
     /// // Determines the location information for the IpAddress provided
     /// </summary>
-    [HttpGet("{ip}")]
+    [HttpGet("{ipAddress}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LocationDTO))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetLocationByIpAddress(string ipAddress)
@@ -41,7 +39,7 @@ public class LocationController : ControllerBase
     /// Used to determine location of caller of API without providing IP - only available when not running locally
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Core.Entities.Location))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LocationDTO))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetLocationForClient()
     {
