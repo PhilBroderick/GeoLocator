@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+    db:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        environment:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: "AVerySecurePassw0rd"
+        ports:
+          - "1433:1433"
+        expose:
+          - 1433
+        
+    geolocator:
+        container_name: geolocator
+        build:
+            context: ./
+            dockerfile: ./src/GeoLocator.Web/Dockerfile
+        ports:
+            - "5000:443"
+        environment:
+            - ASPNETCORE_URLS=https://+;http://+
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/GeoLocator.Web.pfx
+            - ConnectionStrings__DefaultConnection=Data Source=db,1433;Initial Catalog=GeoLocator;User Id=sa;Password=AVerySecurePassw0rd
+            - UseOnlyInMemoryDatabase=true
+        volumes:
+            - ~/.aspnet/https:/https:ro

@@ -1,20 +1,25 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal as build
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["src/GeoLocator.Web/GeoLocator.Web.csproj", "src/GeoLocator.Web/"]
-RUN dotnet restore "src/GeoLocator.Web/GeoLocator.Web.csproj"
-COPY . .
-WORKDIR "/src/src/GeoLocator.Web"
-RUN dotnet build "GeoLocator.Web.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "GeoLocator.Web.csproj" -c Release -o /app/publish
-
-FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+COPY src/GeoLocator.Web/*.csproj ./GeoLocator.Web/
+COPY src/GeoLocator.Infrastructure/*.csproj ./GeoLocator.Infrastructure/
+COPY src/GeoLocator.Core/*.csproj ./GeoLocator.Core/
+COPY src/GeoLocator.Shared/*.csproj ./GeoLocator.Shared/
+
+RUN dotnet restore "GeoLocator.Web/GeoLocator.Web.csproj"
+
+COPY src/GeoLocator.Web/. ./GeoLocator.Web/
+COPY src/GeoLocator.Infrastructure/. ./GeoLocator.Infrastructure/
+COPY src/GeoLocator.Core/. ./GeoLocator.Core/
+COPY src/GeoLocator.Shared/. ./GeoLocator.Shared/
+
+RUN dotnet publish "GeoLocator.Web/GeoLocator.Web.csproj" -c Release -o out --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 as runtime
+WORKDIR /app
+
+COPY --from=build /app/out .
 ENTRYPOINT ["dotnet", "GeoLocator.Web.dll"]
