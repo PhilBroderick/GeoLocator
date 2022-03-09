@@ -372,3 +372,5 @@ FodyWeavers.xsd
 
 # Local service dependencies in Visual Studio
 **/ServiceDependencies/local
+/Terraform/.terraform
+/Terraform/.terraform.lock.hcl
