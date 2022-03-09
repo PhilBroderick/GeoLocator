@@ -1,4 +1,4 @@
-![Build & Test](https://github.com/PhilBroderick/GeoLoctor/actions/workflows/build-test.yaml/badge.svg)
+![Build & Test](https://github.com/PhilBroderick/GeoLocator/actions/workflows/build-test.yaml/badge.svg)
 
 
 # GeoLocator
