@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\GeoLocator.Infrastructure\GeoLocator.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\GeoLocator.Core\GeoLocator.Core.csproj" />
+    <ProjectReference Include="..\..\src\GeoLocator.Infrastructure\GeoLocator.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
