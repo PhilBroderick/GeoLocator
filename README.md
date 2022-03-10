@@ -13,19 +13,30 @@ More services can be easily added and substituted in. *ip-api* is the preferred 
 
 # Architecture
  
- This microservice very much follows the Clean architecture guidelines, containing the following projects:
+## Design Decisions
+This microservice very much follows the Clean architecture guidelines, containing the following projects:
 
- - GeoLocator.Core - core domain library containing entities/aggregate roots/interfaces
- - GeoLocator.Shared - any shared classes to be used by many projects
- - GeoLocator.Infrastructure - any external dependencies - persistence, caching, logging, 3rd party location-from-ip services
- - GeoLocator.Web - Composition root project along with Web API.
+ - `GeoLocator.Core` - core domain library containing entities/aggregate roots/interfaces
+ - `GeoLocator.Shared` - any shared classes to be used by many projects
+ - `GeoLocator.Infrastructure` - any external dependencies - persistence, caching, logging, 3rd party location-from-ip services
+ - `GeoLocator.Web` - Composition root project along with Web API.
+
+### Test Projects
+The test projects have been organised based on the type of test (unit, integration, functional) so that they can be run in parallel/selectively in CI pipelines.
 
 ## API endpoints
 
-This microservice provides 2 public API methods:
+This microservice provides a single public API method:
 
-1. `/api/location` - retrieves the location information for the caller
-2. `/api/location?ipAddress={ipAddress}` - retrieves the location information for the provided ipAddress
+`/api/location`
+
+If called with no parameters, it will attempt to retrieve the location information for the caller (cannot work when running locally).
+
+It can also be called with the following parameter:
+
+`/api/location?ipAddress={ipAddress}`
+
+It will attempt to retrieve the location information for the provided `ipAddress`.
 
 ## Caching/Persistence
 
@@ -43,6 +54,7 @@ HTTP-based response caching is also utilised to provide a further layer of cachi
 The application has been deployed to Azure, using the Terraform configuration defined in the Terraform folder.
 
 This API is accessible at the following URL: https://geo-locator.azurewebsites.net/api/location
+
 There is a SwaggerUI also available at: https://geo-locator.azurewebsites.net/swagger/index.html
 
 ## Running locally
@@ -64,17 +76,17 @@ dotnet dev-certs https --trust
 As there are multiple providers supported, they can be switched easily by setting the corresponding enabled flag to true in `appsettings.json`:
 
 ```json
-IpStack: {
+"IpStack": {
     "Enabled": true
 }
 
-IpApi: {
+"IpApi": {
     "Enabled": true
 }
 ```
 
 ### IpStack - Adding API key
-An API key is required when using IpStack. An account should first be created [here](https://ipstack.com/product) (free is sufficient), and the access key added to the `appsettings.json` file, or alternatively by adding a ENV variable in `docker-compose.yaml` under the geolocator service:
+An API key is required when using IpStack. An account should first be created [here](https://ipstack.com/product) (free is limied to 100 requests per month), and the access key added to the `appsettings.json` file, or alternatively by adding a ENV variable in `docker-compose.yaml` under the geolocator service:
 
 ```yaml
 environment:
@@ -88,3 +100,10 @@ docker-compose up
 ```
 
 and then navigating to `https://localhost:5000/swagger/index.html` in a browser or making a GET request to one of the API endpoint defined earlier.
+
+# Considerations/Enhancements
+
+As with any piece of code/project, it is not perfect! There are some trade offs that were made, and there are certainly some parts that can be improved upon, including, but not limited to:
+
+1. Caching - the current implementation uses the `IMemoryCache` provided in AspNetCore. Although this is sufficient for small/single server caching, it is not sufficient for app server farms, where non-sticky sessions are utilised. For that, some form of distributed cache should be used, such as Redis.
+2. Location Lookup - currently a lookup in the persistence layer is only done against the IP address. This means that if the same IP address range is used, which will come from the same location, this will result in a new Location added to the `Locations` table. This is not ideal. Something such as the Longitude/Latitude could be used to also validate if the location exists when checking the persitence layer.
