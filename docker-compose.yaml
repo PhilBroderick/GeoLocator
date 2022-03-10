@@ -23,7 +23,7 @@ services:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_Kestrel__Certificates__Default__Password=password
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/GeoLocator.Web.pfx
-            - ConnectionStrings__DefaultConnection=Data Source=db,1433;Initial Catalog=GeoLocator;User Id=sa;Password=AVerySecurePassw0rd
-            - UseOnlyInMemoryDatabase=true
+            - ConnectionStrings__GeoLocatorConnection=Data Source=db,1433;Initial Catalog=GeoLocator;User Id=sa;Password=AVerySecurePassw0rd
+            - UseOnlyInMemoryDatabase=false
         volumes:
             - ~/.aspnet/https:/https:ro

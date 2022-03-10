@@ -4,6 +4,7 @@ using GeoLocator.Core.Services;
 using GeoLocator.Infrastructure;
 using GeoLocator.Infrastructure.Caching;
 using GeoLocator.Infrastructure.Logging;
+using GeoLocator.Infrastructure.Services.IpApi;
 using GeoLocator.Infrastructure.Services.IpStack;
 using GeoLocator.Shared.HttpClients;
 using GeoLocator.Web.Extensions;
@@ -19,14 +20,35 @@ builder.Host.UseSerilog((_, config) => config.ReadFrom.Configuration(builder.Con
 builder.Services.Configure<IpStackOptions>(builder.Configuration.GetSection(IpStackOptions.IpStack));
 
 var ipStackOptions = builder.Configuration.GetSection(IpStackOptions.IpStack).Get<IpStackOptions>();
+var ipApiOptions = builder.Configuration.GetSection(IpApiOptions.IpApi).Get<IpApiOptions>();
 
-// Add services to the container.
-builder.Services.AddHttpClient(NamedHttpClients.IpStackHttpClient, client =>
+if (ipStackOptions.Enabled && ipApiOptions.Enabled)
 {
-    client.BaseAddress = new Uri(ipStackOptions.IpStackBaseUrl);
-});
+    throw new Exception("Cannot have mulitple 3rd party location API services enabled");
+}
 
-builder.Services.AddScoped<IIpLocationLookupService, IpStackService>();
+if (ipStackOptions.Enabled)
+{
+    builder.Services.AddHttpClient(NamedHttpClients.IpStackHttpClient, client =>
+    {
+        client.BaseAddress = new Uri(ipStackOptions.BaseUrl);
+    });
+    builder.Services.AddScoped<IIpLocationLookupService, IpStackService>();
+}
+else if (ipApiOptions.Enabled)
+{
+    builder.Services.AddHttpClient(NamedHttpClients.IpApiHttpClient, client =>
+    {
+        client.BaseAddress = new Uri(ipApiOptions.BaseUrl);
+    });
+
+    builder.Services.AddScoped<IIpLocationLookupService, IpApiService>();
+}
+else
+{
+    throw new Exception("No 3rd party location API services enabled");
+}
+
 builder.Services.AddScoped<ILocatorService, LocatorService>();
 builder.Services.AddSingleton(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 

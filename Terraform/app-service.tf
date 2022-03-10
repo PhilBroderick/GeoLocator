@@ -26,6 +26,7 @@ resource "azurerm_app_service" "appservice" {
 
   site_config {
     dotnet_framework_version = "v6.0"
+    app_command_line         = "dotnet GeoLocator.Web.dll"
   }
 
   identity {
@@ -38,7 +39,7 @@ resource "azurerm_app_service" "appservice" {
   }
 
   connection_string {
-    name  = "Database"
+    name  = "GeoLocatorConnection"
     type  = "SQLServer"
     value = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/geo-locator-connection-string)"
   }
