@@ -5,10 +5,11 @@
 Microservice API wrapper for 3rd party location by IP address services
 
 # Supported Services
-Currently only the following service is supported:
+Currently only the following services are supported:
 - [ipstack](https://ipstack.com/)
+- [ip-api](https://ip-api.com/)
 
-More services can be easily added and substituted in.
+More services can be easily added and substituted in. *ip-api* is the preferred option, as it doesn't have a hard monthly limit on API calls like *ipstack* does.
 
 # Architecture
  
@@ -57,7 +58,22 @@ dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\GeoLocator.Web.pfx -p pas
 dotnet dev-certs https --trust
 ```
 
-### Adding API key
+### Switching 3rd party provider
+**Note**: Only one provider can be enabled at a given time.
+
+As there are multiple providers supported, they can be switched easily by setting the corresponding enabled flag to true in `appsettings.json`:
+
+```json
+IpStack: {
+    "Enabled": true
+}
+
+IpApi: {
+    "Enabled": true
+}
+```
+
+### IpStack - Adding API key
 An API key is required when using IpStack. An account should first be created [here](https://ipstack.com/product) (free is sufficient), and the access key added to the `appsettings.json` file, or alternatively by adding a ENV variable in `docker-compose.yaml` under the geolocator service:
 
 ```yaml

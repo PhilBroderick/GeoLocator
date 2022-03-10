@@ -3,6 +3,7 @@ public class IpStackOptions
 {
     public const string IpStack = "IpStack";
 
-    public string IpStackBaseUrl { get; set; } = "";
+    public string BaseUrl { get; set; } = "";
     public string AccessKey { get; set; } = "";
+    public bool Enabled { get; set; }
 }
