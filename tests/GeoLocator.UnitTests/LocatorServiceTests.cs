@@ -11,24 +11,39 @@ public class LocatorServiceTests
 {
     private readonly Mock<IIpLocationLookupService> _ipLocationLookupServiceMock;
     private readonly Mock<ILocationRepository> _locationRepositoryMock;
+    private readonly Mock<IIpValidator> _ipValidatorMock;
     private readonly LocatorService _locatorService;
 
     public LocatorServiceTests()
     {
         _ipLocationLookupServiceMock = new Mock<IIpLocationLookupService>();
         _locationRepositoryMock = new Mock<ILocationRepository>();
+        _ipValidatorMock = new Mock<IIpValidator>();
         var appLogger = Mock.Of<IAppLogger<LocatorService>>();
 
-        _locatorService = new LocatorService(_locationRepositoryMock.Object, 
+        _locatorService = new LocatorService(
+            _locationRepositoryMock.Object, 
             _ipLocationLookupServiceMock.Object,
+            _ipValidatorMock.Object,
             appLogger);
     }
 
     [Fact]
-    public async Task GetLocationByIp_WhenCalled_ChecksRepositoryForIpAddress()
+    public async Task GetLocationByIp_InvalidIp_ThrowsLocationNotFoundException()
+    {
+        // Arrange
+        var ipAddress = "invalid ip";
+
+        // Act/Assert
+        await Assert.ThrowsAsync<LocationNotFoundException>(() => _locatorService.GetLocationByIp(ipAddress));
+    }
+
+    [Fact]
+    public async Task GetLocationByIp_ValidIp_ChecksRepositoryForIpAddress()
     {
         // Arrange
         var ipAddress = "valid ip";
+        _ipValidatorMock.Setup(x => x.ValidateIp(ipAddress)).Returns(true);
         _ipLocationLookupServiceMock.Setup(x => x.GetLocationFromIp(ipAddress)).ReturnsAsync(new Location());
 
         // Act
@@ -45,6 +60,7 @@ public class LocatorServiceTests
         _locationRepositoryMock.Setup(x => x.GetByIpAddress(It.IsAny<string>())).ReturnsAsync(new Location());
 
         var ipAddress = "valid ip";
+        _ipValidatorMock.Setup(x => x.ValidateIp(ipAddress)).Returns(true);
 
         // Act
         await _locatorService.GetLocationByIp(ipAddress);
@@ -58,6 +74,7 @@ public class LocatorServiceTests
     {
         // Arrange
         var ipAddress = "valid ip";
+        _ipValidatorMock.Setup(x => x.ValidateIp(ipAddress)).Returns(true);
 
         _ipLocationLookupServiceMock.Setup(x => x.GetLocationFromIp(ipAddress)).ReturnsAsync(new Location());
 
@@ -74,6 +91,7 @@ public class LocatorServiceTests
     {
         // Arrange
         var ipAddress = "valid ip";
+        _ipValidatorMock.Setup(x => x.ValidateIp(ipAddress)).Returns(true);
 
         _ipLocationLookupServiceMock.Setup(x => x.GetLocationFromIp(ipAddress)).ReturnsAsync(new Location());
 
@@ -89,7 +107,8 @@ public class LocatorServiceTests
     public async Task GetLocationByIp_CannotDetermineLocation_ThrowsLocationNotFoundException()
     {
         // Arrange
-        var ipAddress = "invalid ip";
+        var ipAddress = "location from ip not determined";
+        _ipValidatorMock.Setup(x => x.ValidateIp(ipAddress)).Returns(true);
 
         // Act/Assert
         await Assert.ThrowsAsync<LocationNotFoundException>(() => _locatorService.GetLocationByIp(ipAddress));

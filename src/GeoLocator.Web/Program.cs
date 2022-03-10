@@ -4,6 +4,7 @@ using GeoLocator.Core.Services;
 using GeoLocator.Infrastructure;
 using GeoLocator.Infrastructure.Caching;
 using GeoLocator.Infrastructure.Logging;
+using GeoLocator.Infrastructure.Services;
 using GeoLocator.Infrastructure.Services.IpApi;
 using GeoLocator.Infrastructure.Services.IpStack;
 using GeoLocator.Shared.HttpClients;
@@ -51,6 +52,7 @@ else
 
 builder.Services.AddScoped<ILocatorService, LocatorService>();
 builder.Services.AddSingleton(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+builder.Services.AddTransient<IIpValidator, IpValidator>();
 
 builder.Services.RegisterRepositories();
 

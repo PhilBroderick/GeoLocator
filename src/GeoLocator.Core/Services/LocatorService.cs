@@ -7,14 +7,17 @@ public class LocatorService : ILocatorService
 {
     private readonly ILocationRepository _locationRepository;
     private readonly IIpLocationLookupService _ipLocationLookupService;
+    private readonly IIpValidator _ipValidator;
     private readonly IAppLogger<LocatorService> _logger;
 
     public LocatorService(ILocationRepository locationRepository,
         IIpLocationLookupService ipLocationLookupService,
+        IIpValidator ipValidator,
         IAppLogger<LocatorService> logger)
     {
         _locationRepository = locationRepository;
         _ipLocationLookupService = ipLocationLookupService;
+        _ipValidator = ipValidator;
         _logger = logger;
     }
 
@@ -22,6 +25,12 @@ public class LocatorService : ILocatorService
     {
         try
         {
+            if (!_ipValidator.ValidateIp(ipAddress))
+            {
+                _logger.LogWarning("Unable to validate {IpAddress}", ipAddress);
+
+                throw new ArgumentException("Invalid IpAddress");
+            }
             var locationFromRepo = await _locationRepository.GetByIpAddress(ipAddress);
 
             if (locationFromRepo is not null)
