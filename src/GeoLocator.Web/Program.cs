@@ -45,14 +45,11 @@ builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
 
-    await Dependencies.EnsureDatabaseCreated(app.Services, app.Configuration);
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+await Dependencies.EnsureDatabaseCreated(app.Services, app.Configuration);
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
