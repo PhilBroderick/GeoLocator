@@ -35,7 +35,9 @@ resource "azurerm_app_service" "appservice" {
 
   app_settings = {
     "UseOnlyInMemoryDatabase" = "false"
-    "IpStack__AccessKey": "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/ip-stack-access-key)"
+    "IpStack__AccessKey": "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/ip-stack-access-key)",
+    "ApplicationInsights__ConnectionString": "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/app-insights-connection-string)",
+    "ApplicationInsights__InstrumentationKey": "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault.kv.vault_uri}secrets/app-insights-instrumentation-key)",
   }
 
   connection_string {
