@@ -62,5 +62,5 @@ public class IpApiService : IIpLocationLookupService
     }
 
     private static bool IsInvalidResponse(IpApiResponse ipApiResponse) => 
-        string.IsNullOrWhiteSpace(ipApiResponse.Status) && string.Equals("success", ipApiResponse.Status, StringComparison.OrdinalIgnoreCase);
+        string.IsNullOrWhiteSpace(ipApiResponse.Status) || !string.Equals("success", ipApiResponse.Status, StringComparison.OrdinalIgnoreCase);
 }
