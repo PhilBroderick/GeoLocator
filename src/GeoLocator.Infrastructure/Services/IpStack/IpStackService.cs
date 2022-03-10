@@ -52,7 +52,7 @@ public class IpStackService : IIpLocationLookupService
 
                 if (IsInvalidResponse(ipStackResponse))
                 {
-                    throw new Exception("Invalid response {ipStackResponse} received from ipstack.com"); ;
+                    throw new Exception("Invalid response {IpStackResponse} received from ipstack.com"); ;
                 }
 
                 return new Location
