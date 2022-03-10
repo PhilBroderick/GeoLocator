@@ -42,6 +42,7 @@ HTTP-based response caching is also utilised to provide a further layer of cachi
 The application has been deployed to Azure, using the Terraform configuration defined in the Terraform folder.
 
 This API is accessible at the following URL: https://geo-locator.azurewebsites.net/api/location
+There is a SwaggerUI also available at: https://geo-locator.azurewebsites.net/swagger/index.html
 
 ## Running locally
 
