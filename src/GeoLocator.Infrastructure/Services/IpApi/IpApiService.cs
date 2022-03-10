@@ -41,7 +41,7 @@ public class IpApiService : IIpLocationLookupService
 
                 if (IsInvalidResponse(ipApiResponse))
                 {
-                    throw new Exception("Invalid response {ipStackResponse} received from ipstack.com"); ;
+                    throw new Exception("Invalid response {IpApiResponse} received from ip-api.com"); ;
                 }
 
                 return new Location
